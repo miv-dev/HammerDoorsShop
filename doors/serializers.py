@@ -16,7 +16,7 @@ class PanelSerializer(serializers.HyperlinkedModelSerializer):
 class BranchSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Branch
-        fields = ['id','name']
+        fields = ['id', 'name']
 
 
 class DoorSerializer(serializers.HyperlinkedModelSerializer):

@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'doors',
     'compressor',
     'rest_framework',
-    'simple_history'
+    'django_filters',
+    'simple_history',
+    'import_export'
 ]
 
 REST_FRAMEWORK = {
@@ -67,8 +69,7 @@ ROOT_URLCONF = 'HammerDoors.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
