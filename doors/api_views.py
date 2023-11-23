@@ -1,6 +1,7 @@
 from django.db.models import Q
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
 from rest_framework.decorators import api_view, action
+from rest_framework.response import Response
 
 from .paginations import ResultsSetPagination
 from .serializers import DoorSerializer, BranchSerializer
@@ -17,7 +18,8 @@ class DoorViewSet(viewsets.ModelViewSet):
 
     search_fields = ['title', 'description']
 
-    def get_queryset(self):
+
+    def filter_doors(self):
         queryset = Door.objects.all()
 
         title = self.request.query_params.get('title')
@@ -26,6 +28,22 @@ class DoorViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(Q(title__startswith=title), Q(description__startswith=desc))
         return queryset
     
+    @action(detail=False, methods=['get'], url_path='filter')
+    def filter_doors(self, request):
+        queryset = Door.objects.filter(
+            Q(price__gte=1000) & ~Q(price__gte=2400) | Q(branch='1')
+        )
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def add_product(self, request):
+        serializer = DoorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class BranchViewSet(viewsets.ModelViewSet):

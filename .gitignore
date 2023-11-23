@@ -1,4 +1,5 @@
 /static/CACHE
 /static/admin
 /tailwind/node_modules
+/static/rest_framework
 /.idea

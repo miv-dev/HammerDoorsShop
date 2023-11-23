@@ -7,11 +7,16 @@ class PanelSerializer(serializers.HyperlinkedModelSerializer):
         model = Panel
         fields = ['name', 'image']
 
+    def validate_name(self, value):
+        if Panel.objects.filter(name=value).exists():
+            raise serializers.ValidationError('Панель с таким названием уже существует.')
+        return value
+
 
 class BranchSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Branch
-        fields = ['name']
+        fields = ['id','name']
 
 
 class DoorSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,6 +26,9 @@ class DoorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Door
-        fields = ['title', 'description', 'tech_info', 'branch', 'inside_img', 'outside_img', 'price', 'popular',]
+        fields = ['title', 'description', 'tech_info', 'branch', 'inside_img', 'outside_img', 'price', 'popular', ]
 
-
+    def validate_title(self, value):
+        if Door.objects.filter(title=value).exists():
+            raise serializers.ValidationError('Дверь с таким названием уже существует.')
+        return value
