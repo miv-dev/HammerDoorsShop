@@ -20,7 +20,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from HammerDoors import settings
-from doors.api_views import DoorViewSet
+from doors.api_views import DoorViewSet, BranchViewSet
 router = routers.DefaultRouter()
 router.register(r'doors', DoorViewSet)
 
@@ -28,7 +28,7 @@ router.register(r'doors', DoorViewSet)
 urlpatterns = \
     [
         path('api/', include(router.urls)),
-        
+        path('api/branch/<int:pk>/', BranchViewSet.as_view({'get': 'retrieve'}), name='branch-detail'),
         path('', include('doors.urls')),
         path('admin/', admin.site.urls),
     ] \
