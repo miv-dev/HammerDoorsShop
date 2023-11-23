@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 # Create your models here
@@ -48,6 +49,8 @@ class Door(models.Model):
     tech_info = models.CharField(max_length=5000, verbose_name="Техническое описание")
     price = models.IntegerField(verbose_name="Цена")
     popular = models.IntegerField(editable=False, default=0)
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.title
 
