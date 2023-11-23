@@ -1,0 +1,38 @@
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'public/output.css' %}">
+    {% endcompress %}
+</head>
+<body>
+
+{% include 'nav_bar.html' %}
+<main>
+    {% block content %}
+    {% endblock content %}
+</main>
+
+{% include 'footer.html' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script>
+  let full_size = document.getElementById('full_size');
+
+  function handleClick(newImage) {
+    full_size.src = newImage;
+  }
+
+  window.onload = function () {
+    full_size.src = "{{door.inside_img.image.url}}";
+  }
+
+
+</script>
+</body>
+</html>

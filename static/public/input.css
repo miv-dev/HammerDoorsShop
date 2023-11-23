@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+
+body {
+    margin: 0;
+    font-family: "Montserrat", 'sans-serif';
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #EDEDED;
+    position: relative;
+    box-sizing: border-box;
+}
+
+body {
+    @apply flex flex-col min-h-screen
+}
+
+.center {
+    @apply grid place-items-center
+}
+
+main {
+    flex: 1;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,53 @@
+<div id="zoomModal" tabindex="-1" aria-hidden="true"
+     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-h-full h-full">
+        <div class="bg-white rounded-xl flex p-4 h-full w-full relative">
+            <button type="button"
+                    class="absolute right-4 top-4 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="zoomModal">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <ul class="border-r-2 border-gray-200 pr-6 p-2 flex flex-col gap-8">
+                <li>
+                    <input type="radio" id="inside" name="zoom" class="hidden peer"
+                           value="{{ door.inside_img.image.url }}" onclick="handleClick(this.value)">
+                    <label for="inside"
+                           class="center rounded-lg ring-2 ring-gray-300 ring-offset-4 rounded-md h-16 w-16 hover:ring-primary/70 peer-checked:ring-primary">
+                        <img src="{{ door.inside_img.image.url }}" class="aspect-square min-h-0 min-w-0 object-contain"
+                             alt="Inside panel">
+                    </label>
+                </li>
+                <li>
+                    <input type="radio" id="outside" name="zoom" class="hidden peer"
+                           value="{{ door.outside_img.image.url }}" onclick="handleClick(this.value)">
+                    <label for="outside"
+                           class="center rounded-lg ring-2 ring-gray-300 ring-offset-4 rounded-md h-16 w-16 hover:ring-primary/70 peer-checked:ring-primary">
+                        <img src="{{ door.outside_img.image.url }}" class="aspect-square min-h-0 min-w-0 object-contain"
+                             alt="Inside panel">
+                    </label>
+                </li>
+                {% for film in door.films.all %}
+                    <li>
+                        <input type="radio" id="film-{{ film.id }}" name="zoom" class="hidden peer"
+                               value="{{ film.image.url }}" onclick="handleClick(this.value)">
+                        <label for="film-{{ film.id }}"
+                               class="center rounded-lg ring-2 ring-gray-300 ring-offset-4 rounded-md h-16 w-16 hover:ring-primary/70 peer-checked:ring-primary">
+                            <img src="{{ film.image.url }}" class="min-h-0 min-w-0 object-fill aspect-square rounded-lg"
+                                 alt="Inside panel">
+                        </label>
+                    </li>
+                {% endfor %}
+
+            </ul>
+            <div class="flex-1 center p-6">
+                <img id="full_size" class="min-h-0 min-w-0 object-contain h-full" alt="Full size image" src="{{ door.inside_img.image.url }}"/>
+            </div>
+        </div>
+    </div>
+</div>

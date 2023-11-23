@@ -1,0 +1,174 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+    <section class="py-12 max-w-[1280px] mx-auto px-10">
+        <h1 class="hidden">Каталог</h1>
+
+
+        <div class="bg-white rounded-lg py-3 px-3 w-full my-6 flex gap-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="/"
+                           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                            <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            Главная
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor"
+                                 viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Каталог</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="grid lg:grid-cols-2 grid-cols-1  xl:grid-cols-3  place-items-center flex-1 gap-6">
+            {% for door in page %}
+                <div class=" shadow border-white border-4 bg-white rounded-xl max-w-md">
+                    <div class="flex gap-5 p-4 bg-gray-200 rounded-lg relative">
+                        <img src="{{ door.inside_img.image.url }}" alt=""
+                             class="max-h-[400px] min-h-0 min-w-0 w-full h-full object-contain  rounded-[2px]"/>
+                        <img src="{{ door.outside_img.image.url }}" alt=""
+                             class="max-h-[400px] min-h-0 min-w-0 w-full h-full object-contain rounded-[2px]"/>
+                        <div class="flex gap-4 absolute right-4 bottom-4 bg-white border-white border border-opacity-50 bg-opacity-20 backdrop-blur-md px-4 py-2.5 rounded-lg">
+                            {% for color in door.colors.all %}
+                                <div data-popover role="tooltip" id="door-{{ door.id }}-color-{{ color.id }}"
+                                     class="invisible backdrop-blur-md absolute bg-black bg-opacity-30 px-4 py-2 rounded-xl  transition-opacity duration-400"
+                                >
+                                    <p class="whitespace-nowrap text-white  ">{{ color.name }}</p>
+                                </div>
+                                <div class="w-6 h-6 rounded-full"
+                                     data-popover-offset="15"
+                                     data-popover-target="door-{{ door.id }}-color-{{ color.id }}"
+                                     style="background: {{ color.hex_value }}">
+
+                                </div>
+                            {% endfor %}
+                            {% for film in door.films.all %}
+                                <div data-popover role="tooltip" id="door-{{ door.id }}-film-{{ film.id }}"
+                                     class="flex flex-col invisible items-center gap-2 backdrop-blur-md w-28  transition-opacity duration-400  absolute bg-black bg-opacity-30 px-2 py-2 rounded-xl"
+                                >
+                                    <img class="object-fill rounded-lg aspect-square" src="{{ film.image.url }}"
+                                         alt="Film"/>
+                                    <p class="whitespace-nowrap text-white ">{{ film.name }}</p>
+                                </div>
+                                <img class="w-6 h-6 rounded-lg block" src="{{ film.image.url }}" alt="Film"
+                                     data-popover-trigger="hover"
+                                     data-popover-offset="15"
+                                     data-popover-target="door-{{ door.id }}-film-{{ film.id }}"
+                                />
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="px-4 pt-2 pb-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class=" text-opacity-40">{{ door.title }}</h4>
+                                <p class="uppercase text-[12px] font-bold text-black text-opacity-40">{{ door.branch }}</p>
+                            </div>
+
+
+                        </div>
+                        <div class="flex justify-between items-end">
+                            <p class=" text-xl ">{{ door.price }} руб.</p>
+
+                            <a
+                                    class="mt-5 bg-primary text-white px-4 py-2 rounded-[6px]"
+                                    href="/catalog/{{ door.id }}"
+                            >
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+        <div class="flex bg-white rounded-lg gap-3 py-1 px-1 my-6 items-center">
+            <div class="flex-1"></div>
+            <p class="text-sm font-medium text-gray-400">
+                Показано с
+                <span class="text-primary font-semibold">{{ page.start_index }}</span>
+                по
+                <span class="text-primary font-semibold">{{ page.end_index }}</span>
+                из
+                <span class="text-primary font-semibold">{{ door_count }}</span>
+                дверей
+            </p>
+            <nav aria-label="Door pagination" class="flex-1">
+                <div class="flex justify-end gap-2 ">
+
+
+                    {% if page.has_previous %}
+                        <a href="?page={{ page.previous_page_number }}"
+
+                           class="w-10 h-10 grid place-items-center rounded-lg bg-white hover:bg-primary/20 hover:text-primary"
+                        >
+                            <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M15.79 14.77a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L11.832 10l3.938 3.71a.75.75 0 01.02 1.06zm-6 0a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L5.832 10l3.938 3.71a.75.75 0 01.02 1.06z"></path>
+                            </svg>
+                        </a>
+                    {% else %}
+                        <div class="w-10 h-10 grid place-items-center bg-gray-100 rounded-lg text-gray-400">
+                            <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M15.79 14.77a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L11.832 10l3.938 3.71a.75.75 0 01.02 1.06zm-6 0a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L5.832 10l3.938 3.71a.75.75 0 01.02 1.06z"></path>
+                            </svg>
+                        </div>
+                    {% endif %}
+                    <div class="w-10 h-10 grid place-items-center bg-primary/20 border-primary text-primary border-2 rounded-lg">
+                        {{ page.number }}
+                    </div>
+                    {% if page.has_next %}
+                        <a href="?page={{ page.next_page_number }}"
+
+                           class="w-10 h-10 grid place-items-center rounded-lg hover:bg-primary/20 hover:text-primary"
+                        >
+                            <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M10.21 14.77a.75.75 0 01.02-1.06L14.168 10 10.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"></path>
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M4.21 14.77a.75.75 0 01.02-1.06L8.168 10 4.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"></path>
+                            </svg>
+                        </a>
+                    {% else %}
+                        <div class="w-10 h-10 grid place-items-center bg-gray-100 rounded-lg text-gray-400">
+                            <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M10.21 14.77a.75.75 0 01.02-1.06L14.168 10 10.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"></path>
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                      d="M4.21 14.77a.75.75 0 01.02-1.06L8.168 10 4.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"></path>
+                            </svg>
+                        </div>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </section>
+
+
+{% endblock content %}

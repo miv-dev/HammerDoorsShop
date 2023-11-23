@@ -1,0 +1,180 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+
+    <section class="py-20 max-w-[1280px] mx-auto flex justify-around items-center relative">
+        <div class="z-10 absolute bg-black bg-opacity-50 p-10 rounded-lg lg:relative lg:bg-white backdrop-blur-sm">
+            <p class=" text-primary text-md">- Новинка</p>
+            <h1 class="text-[3.5rem] max-w-xl  leading-[70px] py-4 text-white lg:text-black">{{ cta.title }}</h1>
+            <p class="text-white font-normal lg:text-black mb-5">{{ cta.subtitle }}</p>
+            <a
+                    href="/catalog/{{ cta.door.id }}"
+                    class=" bg-primary text-white px-4 py-2 rounded-[4px]"
+            >
+                Подробнее
+            </a>
+        </div>
+        <div class="flex gap-4 justify-center p-4 rounded-lg">
+            <img src="{{ cta.door.inside_img.image.url }}" alt=""
+                 class="max-h-[500px] object-contain  min-h-0 min-w-0 h-full rounded-[4px]"/>
+            <img src="{{ cta.door.outside_img.image.url }}" alt=""
+                 class="max-h-[500px] object-contain  min-h-0 min-w-0 h-full rounded-[4px]"/>
+        </div>
+    </section>
+    <section class=" bg-white lg:rounded-lg py-10 mb-20 px-10 max-w-[1280px] mx-auto">
+        <div class="flex justify-between items-center">
+            <h2 class="text-center text-2xl lg:text-3xl">Выбор покупателей</h2>
+            <a href="/catalog"
+               class="inline-flex items-center gap-4 group hover:text-primary ">
+                Все двери
+                <svg aria-hidden="true"
+                     class="w-8 h-8 border-2 border-black group-hover:border-primary group-hover:bg-primary group-hover:text-white rounded-full"
+                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="flex my-14">
+            <div class="grid lg:grid-cols-2 grid-cols-1  xl:grid-cols-3  place-items-center flex-1 px-5 gap-6">
+                {% for door in doors %}
+                    <div class=" shadow bg-white rounded-xl max-w-md">
+                        <div class="flex gap-5 p-4 bg-gray-200 rounded-lg relative">
+                            <img src="{{ door.inside_img.image.url }}" alt=""
+                                 class="max-h-[400px] min-h-0 min-w-0 w-full h-full object-contain  rounded-[2px]"/>
+                            <img src="{{ door.outside_img.image.url }}" alt=""
+                                 class="max-h-[400px] min-h-0 min-w-0 w-full h-full object-contain rounded-[2px]"/>
+                            <div class="flex gap-4 absolute right-4 bottom-4 bg-white border-white border border-opacity-50 bg-opacity-20 backdrop-blur-md px-4 py-2.5 rounded-lg">
+                                {% for color in door.colors.all %}
+                                    <div data-popover role="tooltip" id="door-{{ door.id }}-color-{{ color.id }}"
+                                         class="invisible backdrop-blur-md absolute bg-black bg-opacity-30 px-4 py-2 rounded-xl  transition-opacity duration-400"
+                                    >
+                                        <p class="whitespace-nowrap text-white  ">{{ color.name }}</p>
+                                    </div>
+                                    <div class="w-6 h-6 rounded-full"
+                                         data-popover-offset="15"
+                                         data-popover-target="door-{{ door.id }}-color-{{ color.id }}"
+                                         style="background: {{ color.hex_value }}">
+
+                                    </div>
+                                {% endfor %}
+                                {% for film in door.films.all %}
+                                    <div data-popover role="tooltip" id="door-{{ door.id }}-film-{{ film.id }}"
+                                         class="flex flex-col invisible items-center gap-2 backdrop-blur-md w-28  transition-opacity duration-400  absolute bg-black bg-opacity-30 px-2 py-2 rounded-xl"
+                                    >
+                                        <img class="object-fill rounded-lg aspect-square" src="{{ film.image.url }}"
+                                             alt="Film"/>
+                                        <p class="whitespace-nowrap text-white ">{{ film.name }}</p>
+                                    </div>
+                                    <img class="w-6 h-6 rounded-lg block" src="{{ film.image.url }}" alt="Film"
+                                         data-popover-trigger="hover"
+                                         data-popover-offset="15"
+                                         data-popover-target="door-{{ door.id }}-film-{{ film.id }}"
+                                    />
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <div class="px-4 pt-2 pb-4">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class=" text-opacity-40">{{ door.title }}</h4>
+                                    <p class="uppercase text-[12px] font-bold text-black text-opacity-40">{{ door.branch }}</p>
+                                </div>
+
+
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <p class=" text-xl ">{{ door.price }} руб.</p>
+
+                                <a
+                                        class="mt-5 bg-primary text-white px-4 py-2 rounded-[6px]"
+                                        href="/catalog/{{ door.id }}"
+                                >
+                                    Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <a href="/catalog"
+               class="inline-flex items-center gap-4 group hover:text-primary ">
+                Все двери
+                <svg aria-hidden="true"
+                     class="w-8 h-8 border-2 border-black group-hover:border-primary group-hover:bg-primary group-hover:text-white rounded-full"
+                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
+    <section class="py-10 bg-[#042684] lg:h-[800px]">
+        <h2 class="text-center text-3xl text-white">Наши преимущества</h2>
+
+        <div class="max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center h-full py-16 gap-10 items-center">
+            <article class="flex flex-col items-center px-5 text-white max-w-md border-b border-white/20 lg:border-0 h-[300px]">
+                <div class="bg-gradient-to-br w-[100px] lg:w-[146px] aspect-square from-primary/30 via-transparent to-primary/30 border border-primary grid place-items-center rounded-xl">
+
+                    <svg fill="currentColor" viewBox="0 0 20 20" class="w-[56px] lg:w-[106px] aspect-square text-white"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                              d="M9.638 1.093a.75.75 0 01.724 0l2 1.104a.75.75 0 11-.724 1.313L10 2.607l-1.638.903a.75.75 0 11-.724-1.313l2-1.104zM5.403 4.287a.75.75 0 01-.295 1.019l-.805.444.805.444a.75.75 0 01-.724 1.314L3.5 7.02v.73a.75.75 0 01-1.5 0v-2a.75.75 0 01.388-.657l1.996-1.1a.75.75 0 011.019.294zm9.194 0a.75.75 0 011.02-.295l1.995 1.101A.75.75 0 0118 5.75v2a.75.75 0 01-1.5 0v-.73l-.884.488a.75.75 0 11-.724-1.314l.806-.444-.806-.444a.75.75 0 01-.295-1.02zM7.343 8.284a.75.75 0 011.02-.294L10 8.893l1.638-.903a.75.75 0 11.724 1.313l-1.612.89v1.557a.75.75 0 01-1.5 0v-1.557l-1.612-.89a.75.75 0 01-.295-1.019zM2.75 11.5a.75.75 0 01.75.75v1.557l1.608.887a.75.75 0 01-.724 1.314l-1.996-1.101A.75.75 0 012 14.25v-2a.75.75 0 01.75-.75zm14.5 0a.75.75 0 01.75.75v2a.75.75 0 01-.388.657l-1.996 1.1a.75.75 0 11-.724-1.313l1.608-.887V12.25a.75.75 0 01.75-.75zm-7.25 4a.75.75 0 01.75.75v.73l.888-.49a.75.75 0 01.724 1.313l-2 1.104a.75.75 0 01-.724 0l-2-1.104a.75.75 0 11.724-1.313l.888.49v-.73a.75.75 0 01.75-.75z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl mt-10 mb-2">Создание Дверей</h3>
+                <p class="font-medium text-sm text-center">
+                    За проектирование отвечают опытные инженеры
+                </p>
+
+            </article>
+            <article class="flex flex-col items-center px-5 text-white max-w-md  border-b border-white/20 lg:border-0 h-[300px]">
+                <div class="bg-gradient-to-br w-[100px] lg:w-[146px] aspect-square from-primary/30 via-transparent to-primary/30 border border-primary grid place-items-center rounded-xl">
+                    <svg fill="currentColor" class="w-[56px] lg:w-[106px] aspect-square text-white" viewBox="0 0 20 20"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M14 6H6v8h8V6z"></path>
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                              d="M9.25 3V1.75a.75.75 0 011.5 0V3h1.5V1.75a.75.75 0 011.5 0V3h.5A2.75 2.75 0 0117 5.75v.5h1.25a.75.75 0 010 1.5H17v1.5h1.25a.75.75 0 010 1.5H17v1.5h1.25a.75.75 0 010 1.5H17v.5A2.75 2.75 0 0114.25 17h-.5v1.25a.75.75 0 01-1.5 0V17h-1.5v1.25a.75.75 0 01-1.5 0V17h-1.5v1.25a.75.75 0 01-1.5 0V17h-.5A2.75 2.75 0 013 14.25v-.5H1.75a.75.75 0 010-1.5H3v-1.5H1.75a.75.75 0 010-1.5H3v-1.5H1.75a.75.75 0 010-1.5H3v-.5A2.75 2.75 0 015.75 3h.5V1.75a.75.75 0 011.5 0V3h1.5zM4.5 5.75c0-.69.56-1.25 1.25-1.25h8.5c.69 0 1.25.56 1.25 1.25v8.5c0 .69-.56 1.25-1.25 1.25h-8.5c-.69 0-1.25-.56-1.25-1.25v-8.5z"></path>
+                    </svg>
+
+                </div>
+                <h3 class="text-xl mt-10 mb-2">Оборудование</h3>
+                <p class="font-medium text-sm text-center">
+                    Для создания наших дверей мы используем новейшее оснащение от таких компаний как: Salvagnini,
+                    Trumpf и т. д.
+                </p>
+            </article>
+
+            <article class="flex flex-col items-center px-5 text-white max-w-md h-[300px]">
+                <div class="bg-gradient-to-br w-[100px] lg:w-[146px] aspect-square from-primary/30 via-transparent to-primary/30 border border-primary grid place-items-center rounded-xl">
+
+                    <svg fill="currentColor" viewBox="0 0 20 20" class="w-[56px] lg:w-[106px] aspect-square text-white"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                              d="M18 5.25a2.25 2.25 0 00-2.012-2.238A2.25 2.25 0 0013.75 1h-1.5a2.25 2.25 0 00-2.238 2.012c-.875.092-1.6.686-1.884 1.488H11A2.5 2.5 0 0113.5 7v7h2.25A2.25 2.25 0 0018 11.75v-6.5zM12.25 2.5a.75.75 0 00-.75.75v.25h3v-.25a.75.75 0 00-.75-.75h-1.5z"></path>
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                              d="M3 6a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V7a1 1 0 00-1-1H3zm6.874 4.166a.75.75 0 10-1.248-.832l-2.493 3.739-.853-.853a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.154-.114l3-4.5z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl mt-10 mb-2">Тестирование</h3>
+                <p class="font-medium text-sm text-center">
+                    Каждая новая модель проходит тщательную проверку
+                </p>
+
+            </article>
+        </div>
+
+
+    </section>
+
+
+{% endblock content %}

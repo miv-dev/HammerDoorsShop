@@ -1,0 +1,33 @@
+{% load static %}
+
+<header >
+    <nav class="flex h-20 items-center justify-between lg:justify-start bg-white w-full px-10 gap-20">
+        <h3 class="text-2xl font-semibold text-black leading-3 w-[130px] lg:w-auto">
+            Хаммер <span class="text-sm lg:text-2xl">двери</span>
+        </h3>
+        <ul class="flex gap-10">
+            {% if '/' == request.path %}
+                <li><a href="/" class=" text-primary">Главная</a></li>
+
+            {% else %}
+                <li><a href="/" class="text-black hover:text-primary">Главная</a></li>
+            {% endif %}
+
+            {% if 'catalog' in request.path %}
+                <li><a href="/catalog" class="text-primary">Каталог</a></li>
+
+            {% else %}
+                <li><a href="/catalog" class="text-black hover:text-primary">Каталог</a></li>
+            {% endif %}
+
+            {% if 'contacts' in request.path %}
+                <li><a href="/contacts" class="text-primary">Контакты</a></li>
+            {% else %}
+                <li><a href="/contacts" class="text-black hover:text-primary">Контакты</a></li>
+            {% endif %}
+
+
+        </ul>
+
+    </nav>
+</header>

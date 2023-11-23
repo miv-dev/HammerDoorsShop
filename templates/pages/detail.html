@@ -1,0 +1,144 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+    {% include 'pages/modals.html' %}
+    <section class="pt-5 max-w-[1280px] mx-auto px-10">
+        <h1 class="hidden">Каталог</h1>
+
+
+        <div class="bg-white rounded-lg py-3 px-3 w-full my-6 flex gap-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="/"
+                           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                            <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            Главная
+                        </a>
+                    </li>
+                    <li class="inline-flex items-center">
+                        <a href="/catalog"
+                           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                            <svg aria-hidden="true" class="w-6 h-6 mr-2" fill="currentColor"
+                                 viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                            Каталог
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor"
+                                 viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{ door.title }}</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="h-full">
+            <div class="flex pt-3">
+                <div class="flex max-w-lg px-8">
+                    <img class="min-w-[100px]" src="{{ door.inside_img.image.url }}" alt="{{ door.inside_img.name }}"/>
+                    <img class="min-w-[100px]" src="{{ door.outside_img.image.url }}"
+                         alt="{{ door.outside_img.name }}"/>
+                </div>
+                <div class="bg-white flex-1 rounded-lg px-4 py-3 ">
+                    <h1 class="text-2xl ">{{ door.title }}</h1>
+                    <p class="font-bold text-gray-400 uppercase text-sm pb-8">{{ door.branch.name }}</p>
+                    <div class="flex flex-wrap gap-2">
+
+                        <div class="flex-1">
+                            <h2 class="font-medium">Цвета:</h2>
+                            {% for color in door.colors.all %}
+                                <article
+                                        class="min-w-[200px] rounded-lg p-4 hover:bg-gray-200 flex gap-4 items-center">
+                                    <div class="ring-1 ring-gray-300 ring-offset-4 rounded-md h-12 w-12"
+                                         style="background: {{ color.hex_value }}"></div>
+                                    <p class="font-medium">{{ color.name }}</p>
+                                </article>
+                            {% endfor %}
+                        </div>
+
+                        <div class="flex-1">
+                            <h2 class="font-medium">Пленки:</h2>
+                            {% for film in door.films.all %}
+                                <article
+                                        class="min-w-[200px] rounded-lg p-4 hover:bg-gray-200 flex gap-4 items-center group">
+                                    <div class="ring-1 ring-gray-300 ring-offset-4 rounded-md h-12 w-12 relative ">
+                                        <img class="object-fill rounded-lg aspect-square" src="{{ film.image.url }}"
+                                             alt="Film"/>
+                                        <button data-modal-target="zoomModal"
+                                                onclick="handleClick('{{ film.image.url }}');"
+                                                data-modal-toggle="zoomModal"
+                                                class="w-12 h-12 invisible group-hover:visible absolute top-0 left-0 text-white grid place-items-center bg-black/20 rounded-lg">
+                                            <svg fill="currentColor" class="w-8 h-8" viewBox="0 0 20 20"
+                                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path d="M9 6a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5v-1.5A.75.75 0 019 6z"></path>
+                                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                                      d="M2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9zm7-5.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"></path>
+                                            </svg>
+                                        </button>
+
+                                    </div>
+                                    <p class="font-medium">{{ film.name }}</p>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+    <section class="pt-5 max-w-[1280px] mx-auto px-10 min-h-screen">
+        <ul id="door_info"
+            data-tabs-toggle="#door_info_content"
+            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 ">
+            <li class="mr-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="description-tab"
+                        data-tabs-target="#description"
+                        type="button" role="tab" aria-controls="description" aria-selected="false">Описание
+                </button>
+            </li>
+            <li class="mr-2">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="description-tab"
+                        data-tabs-target="#tech"
+                        type="button" role="tab" aria-controls="tech" aria-selected="false">Техническое описание
+                </button>
+            </li>
+        </ul>
+        <div id="door_info_content" class="p-4">
+            <div class="hidden p-4 rounded-lg bg-white "
+                 id="description"
+                 role="tabpanel"
+                 aria-labelledby="description-tab">
+                {{ door.description }}
+            </div>
+            <div class="hidden p-4 rounded-lg bg-white"
+                 id="tech"
+                 role="tabpanel"
+                 aria-labelledby="tech-tab">
+                {{ door.tech_info }}
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
