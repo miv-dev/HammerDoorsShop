@@ -39,9 +39,9 @@ class Door(models.Model):
     title = models.CharField(max_length=30, verbose_name="Название")
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name="Назначение")
     description = models.CharField(max_length=255, verbose_name="Описание")
-    inside_img = models.OneToOneField(Panel, on_delete=models.CASCADE, verbose_name="Внутреняя панель",
+    inside_img = models.ForeignKey(Panel, on_delete=models.CASCADE, verbose_name="Внутреняя панель",
                                       related_name="inside_panel")
-    outside_img = models.OneToOneField(Panel, on_delete=models.CASCADE, verbose_name="Внешняя панель",
+    outside_img = models.ForeignKey(Panel, on_delete=models.CASCADE, verbose_name="Внешняя панель",
                                        related_name="outside_panel")
 
     colors = models.ManyToManyField(Color, verbose_name="Цвета")
